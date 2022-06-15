@@ -9,12 +9,13 @@
 void non_interactive(void)
 {
 	char **current_command = NULL;
-	int i, type_command = 0;
+	int i, type_command = 0, i_eof;
 	size_t n = 0;
 
 	if (!(isatty(STDIN_FILENO)))
 	{
-		while (getline(&line, &n, stdin) != -1)
+		line = read_line(&i_eof);
+		while (i_eof != -1)
 		{
 			remove_newline(line);
 			remove_comment(line);

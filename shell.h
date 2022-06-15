@@ -79,6 +79,9 @@ void bring_line(char **lineptr, size_t *n, char *buffer, size_t j);
 ssize_t get_line(char **lineptr, size_t *n, FILE *stream);
 char *read_line(int *i_eof);
 
+/* cd.c */
+int _cd(char **tokens, char **env);
+
 
 /*main*/
 extern void non_interactive(void);
