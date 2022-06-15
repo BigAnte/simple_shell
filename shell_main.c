@@ -2,9 +2,10 @@
 
 
 	char **commands = NULL;
-	char *line = NULL;
+	char *line1 = NULL;
 	char *shell_name = NULL;
 	int status = 0;
+	char *line;
 
 /**
  * main - the main shell code
@@ -21,8 +22,9 @@
 int main(int argc __attribute__((unused)), char **argv)
 {
 	char **current_command = NULL;
-	int i, type_command = 0;
+	int i, type_command = 0, i_eof;
 	size_t n = 0;
+	
 
 	signal(SIGINT, ctrl_c_handler);
 	shell_name = argv[0];
@@ -30,8 +32,10 @@ int main(int argc __attribute__((unused)), char **argv)
 	{
 		non_interactive();
 		print(" ($) ", STDOUT_FILENO);
-		if (getline(&line, &n, stdin) == -1)
+		line = read_line(&i_eof);
+		if (i_eof == -1)
 		{
+			printf("%s",line);
 			free(line);
 			exit(status);
 		}

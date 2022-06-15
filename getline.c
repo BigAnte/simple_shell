@@ -1,80 +1,101 @@
-#ifndef SHELL_H
-#define SHELL_H
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <errno.h>
-#include <dirent.h>
-#include <signal.h>
-
-
-/*constants*/
-#define EXTERNAL_COMMAND 1
-#define INTERNAL_COMMAND 2
-#define PATH_COMMAND 3
-#define INVALID_COMMAND -1
-
-#define min(x, y) (((x) < (y)) ? (x) : (y))
+#include "shell.h"
 
 /**
- *struct map - a struct that maps a command name to a function 
- *
- *@command_name: name of the command
- *@func: the function that executes the command
+ * bring_line - assigns the line var for get_line
+ * @lineptr: Buffer that store the input str
+ * @buffer: str that is been called to line
+ * @n: size of line
+ * @j: size of buffer
  */
-
-typedef struct map
+void bring_line(char **lineptr, size_t *n, char *buffer, size_t j)
 {
-	char *command_name;
-	void (*func)(char **command);
-} function_map;
 
-extern char **environ;
-extern char *line;
-extern char **commands;
-extern char *shell_name;
-extern int status;
+	if (*lineptr == NULL)
+	{
+		if  (j > BUFSIZE)
+			*n = j;
 
-/*helpers*/
-void print(char *, int);
-char **tokenizer(char *, char *);
-void remove_newline(char *);
-int _strlen(char *);
-void _strcpy(char *, char *);
+		else
+			*n = BUFSIZE;
+		*lineptr = buffer;
+	}
+	else if (*n < j)
+	{
+		if (j > BUFSIZE)
+			*n = j;
+		else
+			*n = BUFSIZE;
+		*lineptr = buffer;
+	}
+	else
+	{
+		_strcpy(*lineptr, buffer);
+		free(buffer);
+	}
+}
+/**
+ * get_line - Read inpt from stream
+ * @lineptr: buffer that stores the input
+ * @n: size of lineptr
+ * @stream: stream to read from
+ * Return: The number of bytes
+ */
+ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
+{
+	int i;
+	static ssize_t input;
+	ssize_t retval;
+	char *buffer;
+	char t = 'z';
 
-/*helpers2*/
-int _strcmp(char *, char *);
-char *_strcat(char *, char *);
-int _strspn(char *, char *);
-int _strcspn(char *, char *);
-char *_strchr(char *, char);
+	if (input == 0)
+		fflush(stream);
+	else
+		return (-1);
+	input = 0;
 
-/*helpers3*/
-char *_strtok_r(char *, char *, char **);
-int _atoi(char *);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-void ctrl_c_handler(int);
-void remove_comment(char *);
+	buffer = malloc(sizeof(char) * BUFSIZE);
+	if (buffer == 0)
+		return (-1);
+	while (t != '\n')
+	{
+		i = read(STDIN_FILENO, &t, 1);
+		if (i == -1 || (i == 0 && input == 0))
+		{
+			free(buffer);
+			return (-1);
+		}
+		if (i == 0 && input != 0)
+		{
+			input++;
+			break;
+		}
+		if (input >= BUFSIZE)
+			buffer = _realloc(buffer, input, input + 1);
+		buffer[input] = t;
+		input++;
+	}
+	buffer[input] = '\0';
+	bring_line(lineptr, n, buffer, input);
+	retval = input;
+	if (i != 0)
+		input = 0;
+	return (retval);
+}
 
-/*utils*/
-int parse_command(char *);
-void execute_command(char **, int);
-char *check_path(char *);
-void (*get_func(char *))(char **);
-char *_getenv(char *);
 
-/*built_in*/
-void env(char **);
-void quit(char **);
+/**
+ * read_line - reads the input string.
+ *
+ * @i_eof: return value of getline function
+ * Return: input string
+ */
+char *read_line(int *i_eof)
+{
+	char *input = NULL;
+	size_t bufsize = 0;
 
-/*main*/
-extern void non_interactive(void);
-extern void initializer(char **current_command, int type_command);
+	*i_eof = getline(&input, &bufsize, stdin);
 
-#endif /*SHELL_H*/
-
+	return (input);
+}

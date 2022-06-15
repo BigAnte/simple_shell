@@ -18,6 +18,7 @@
 #define INTERNAL_COMMAND 2
 #define PATH_COMMAND 3
 #define INVALID_COMMAND -1
+#define BUFSIZE 1024
 
 #define min(x, y) (((x) < (y)) ? (x) : (y))
 
@@ -76,6 +77,7 @@ void quit(char **);
 
 void bring_line(char **lineptr, size_t *n, char *buffer, size_t j);
 ssize_t get_line(char **lineptr, size_t *n, FILE *stream);
+char *read_line(int *i_eof);
 
 
 /*main*/
