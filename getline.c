@@ -72,12 +72,6 @@ char *_getenv(char *);
 void env(char **);
 void quit(char **);
 
-/* getline */
-
-void bring_line(char **lineptr, size_t *n, char *buffer, size_t j);
-ssize_t get_line(char **lineptr, size_t *n, FILE *stream);
-
-
 /*main*/
 extern void non_interactive(void);
 extern void initializer(char **current_command, int type_command);
