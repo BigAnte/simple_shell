@@ -1,9 +1,3 @@
-/*
- * File: locate.c
- * Authors: Ukonu, Divine Chisom
- *          Nobert Patrick
- */
-
 #include "shell.h"
 
 char *fill_path_dir(char *path);

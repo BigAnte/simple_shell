@@ -1,9 +1,3 @@
-/*
- * File: helpers_2.c
- * Author: Ukonu, Divine Chisom
- *         Nobert Patrick
- */
-
 #include "shell.h"
 
 void handle_line(char **line, ssize_t read);

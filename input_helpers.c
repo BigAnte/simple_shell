@@ -1,9 +1,3 @@
-/*
- * File: input_helpers.c
- * Authors: Ukonu, Divine Chisom
- *          Nobert Patrick
- */
-
 #include "shell.h"
 
 char *get_args(char *line, int *exe_ret);

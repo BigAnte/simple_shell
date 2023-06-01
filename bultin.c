@@ -1,7 +1,3 @@
-/*
- * File: builtin.c
- * Authors: Nobert & Divine
- */
 #include "shell.h"
 int (*get_builtin(char *command))(char **args, char **front);
 int shellby_exit(char **args, char **front);

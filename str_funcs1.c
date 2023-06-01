@@ -1,9 +1,3 @@
-/*
- * File: str_funcs1.c
- * Authors: Adeyemi Anifowose
- *          Apo Olugbenga
- */
-
 #include "shell.h"
 
 int _strlen(const char *s);

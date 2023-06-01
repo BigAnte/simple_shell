@@ -1,9 +1,3 @@
-/*
- * File: str_funcs2.c
- * Authors: Adeyemi Anifowose
- *          Apo Olugbenga
- */
-
 #include "shell.h"
 
 char *_strchr(char *s, char c);

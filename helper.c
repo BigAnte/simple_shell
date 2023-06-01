@@ -1,9 +1,3 @@
-/*
- * File: helper.c
- * Authors: Ukonu, Divine Chisom
- *          Nobert Patrick
- */
-
 #include "shell.h"
 
 void free_args(char **args, char **front);
